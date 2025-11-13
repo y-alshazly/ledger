@@ -1,98 +1,303 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Ledger - Wallet Transaction Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A robust NestJS-based wallet transaction management system with support for multiple currencies, atomic transactions, and idempotency guarantees.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- 💰 **Multi-Currency Support**: Handle transactions in EGP, USD, EUR, and SAR with automatic conversion
+- 🔒 **Atomic Transactions**: MongoDB transactions ensure data consistency
+- 🔄 **Idempotent Operations**: Prevent duplicate transaction processing
+- ✅ **Balance Validation**: Automatic insufficient funds checking
+- 🧪 **Comprehensive Testing**: Full unit test coverage for transaction logic
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tech Stack
 
-## Project setup
+- **Framework**: NestJS
+- **Database**: MongoDB with Mongoose ODM
+- **Language**: TypeScript
+- **Testing**: Jest
+- **Validation**: class-validator
 
-```bash
-$ yarn install
+## Project Structure
+
+```
+src/
+├── transactions/
+│   ├── dto/
+│   │   └── create-transaction.dto.ts
+│   ├── schemas/
+│   │   └── transaction.schema.ts
+│   ├── enums/
+│   │   ├── currency.ts
+│   │   └── type.ts
+│   ├── transactions.service.ts
+│   └── transactions.service.spec.ts
+├── wallets/
+│   ├── dto/
+│   ├── schemas/
+│   │   └── wallet.schema.ts
+│   └── wallets.service.ts
+└── common/
+    └── mongo-transactions/
+        └── mongo-transactions.service.ts
 ```
 
-## Compile and run the project
+## Installation
 
 ```bash
-# development
-$ yarn run start
+# Install dependencies
+yarn
 
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+# Set up environment variables
+cp .env.example .env
 ```
 
-## Run tests
+## Environment Variables
+
+```env
+PORT=5001
+URI=mongodb://localhost:27017/ledger-dev?replicaSet=rs0
+```
+
+## Running the Application
 
 ```bash
-# unit tests
-$ yarn run test
+# Development
+yarn start:dev
 
-# e2e tests
-$ yarn run test:e2e
+# Production
+yarn build
+yarn start:prod
 
-# test coverage
-$ yarn run test:cov
+# Watch mode
+yarn start:dev
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Testing
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+# Run all tests
+yarn test
+
+# Run tests in watch mode
+yarn test:watch
+
+# Run tests with coverage
+yarn test:cov
+
+# Run specific test file
+yarn test transactions.service.spec.ts
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## API Overview
 
-## Resources
+### Transaction Types
 
-Check out a few resources that may come in handy when working with NestJS:
+- **Deposit**: Add funds to a wallet
+- **Withdrawal**: Remove funds from a wallet (with balance validation)
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Supported Currencies
 
-## Support
+| Currency       | Code | Exchange Rate to EGP |
+| -------------- | ---- | -------------------- |
+| Egyptian Pound | EGP  | 1.0                  |
+| US Dollar      | USD  | 48.0                 |
+| Euro           | EUR  | 52.0                 |
+| Saudi Riyal    | SAR  | 12.8                 |
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Core Services
 
-## Stay in touch
+### TransactionsService
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Handles all transaction operations with the following features:
+
+- **Currency Conversion**: Automatic conversion to EGP base currency
+- **Balance Management**: Updates wallet balances atomically
+- **Duplicate Prevention**: Checks for existing `transactionId` to ensure idempotency
+- **Transaction Wrapping**: All operations run within MongoDB transactions
+
+#### Key Methods
+
+```typescript
+async create(createTransactionDto: CreateTransactionDto): Promise<Transaction>
+```
+
+Creates a new transaction and updates the associated wallet balance.
+
+**Parameters:**
+
+- `wallet`: MongoDB ObjectId of the wallet
+- `transactionId`: Unique identifier for idempotency
+- `type`: Transaction type (deposit/withdrawal)
+- `amount`: Transaction amount
+- `currency`: Currency code (EGP/USD/EUR/SAR)
+
+**Throws:**
+
+- `BadRequestException`: If transaction already exists or insufficient funds
+
+### WalletsService
+
+Manages wallet operations:
+
+```typescript
+async create(createWalletDto: CreateWalletDto): Promise<Wallet>
+async getOne(id: Types.ObjectId): Promise<Wallet>
+async updateOne(id: Types.ObjectId, updateWalletDto: UpdateWalletDto): Promise<Wallet>
+```
+
+### MongoTransactionsService
+
+Provides transaction management utilities:
+
+```typescript
+async runInTransaction<T>(
+  fn: (session: ClientSession) => Promise<T>,
+  existingSession?: ClientSession
+): Promise<T>
+```
+
+## Schemas
+
+### Transaction Schema
+
+```typescript
+{
+  wallet: ObjectId (ref: Wallet),
+  transactionId: string (unique),
+  type: 'deposit' | 'withdrawal',
+  amount: number,
+  currency: 'EGP' | 'USD' | 'EUR' | 'SAR',
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Wallet Schema
+
+```typescript
+{
+  userId: string (unique),
+  balance: number (default: 0),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+## Test Coverage
+
+The project includes comprehensive unit tests covering:
+
+- ✅ Deposit transactions increase balance
+- ✅ Withdrawal transactions decrease balance
+- ✅ Insufficient funds validation
+- ✅ Currency conversion accuracy
+- ✅ Idempotent transaction handling (duplicate prevention)
+- ✅ Concurrent transaction consistency
+- ✅ Edge cases (zero amounts, balance to zero)
+
+### Running Tests
+
+```bash
+# Run all tests
+yarn test
+
+# Run with coverage report
+yarn test:cov
+
+# Run in watch mode
+yarn test:watch
+```
+
+## Example Usage
+
+### Creating a Deposit Transaction
+
+```typescript
+const transaction = await transactionsService.create({
+  wallet: new Types.ObjectId('wallet_id'),
+  transactionId: 'txn_001',
+  type: Type.deposit,
+  amount: 100,
+  currency: Currency.USD,
+});
+
+// Wallet balance increases by 4800 EGP (100 USD * 48)
+```
+
+### Creating a Withdrawal Transaction
+
+```typescript
+const transaction = await transactionsService.create({
+  wallet: new Types.ObjectId('wallet_id'),
+  transactionId: 'txn_002',
+  type: Type.withdrawal,
+  amount: 50,
+  currency: Currency.EGP,
+});
+
+// Wallet balance decreases by 50 EGP
+// Throws BadRequestException if insufficient funds
+```
+
+## Error Handling
+
+The service handles various error scenarios:
+
+- **Duplicate Transaction**: `BadRequestException: "This transaction is processed Before"`
+- **Insufficient Funds**: `BadRequestException: "Insufficient funds"`
+- **Unsupported Currency**: `BadRequestException: "Unsupported currency: {currency}"`
+- **Wallet Not Found**: `NotFoundException: "Wallet not found"`
+
+## Transaction Safety
+
+All transaction operations are wrapped in MongoDB transactions to ensure:
+
+1. **Atomicity**: All changes succeed or fail together
+2. **Consistency**: Balance updates are always correct
+3. **Isolation**: Concurrent transactions don't interfere
+4. **Durability**: Committed transactions are permanent
+
+## Development
+
+### Code Style
+
+The project uses ESLint and Prettier for code formatting:
+
+```bash
+# Lint code
+yarn lint
+
+# Format code
+yarn format
+```
+
+### Project Conventions
+
+- Use TypeScript strict mode
+- Follow NestJS architectural patterns
+- Write tests for all business logic
+- Use DTOs for data validation
+- Implement proper error handling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License.
+
+## Author
+
+Youssef Al-Shazly
+
+## Acknowledgments
+
+- Built with [NestJS](https://nestjs.com/)
+- Database: [MongoDB](https://www.mongodb.com/)
+- Testing: [Jest](https://jestjs.io/)
