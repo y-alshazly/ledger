@@ -4,8 +4,8 @@ import { Model, PopulateOptions, Types } from 'mongoose';
 
 import { Wallet } from './schemas';
 import { CreateWalletDto, UpdateWalletDto } from './dto';
-import { FindOneOptions } from 'src/common/dto/find-one-options.dto';
-import { exceptions } from 'src/core/exceptions/constants';
+import { FindOneOptions } from '../common/dto/find-one-options.dto';
+import { exceptions } from '../core/exceptions/constants';
 
 @Injectable()
 export class WalletsService {

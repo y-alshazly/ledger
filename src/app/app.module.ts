@@ -7,6 +7,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { ExceptionFilter } from '../core/exceptions/exceptions.filter';
 import { WalletsModule } from 'src/wallets/wallets.module';
+import { TransactionsModule } from 'src/transactions/transactions.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { WalletsModule } from 'src/wallets/wallets.module';
     }),
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 20 }]),
     WalletsModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [
